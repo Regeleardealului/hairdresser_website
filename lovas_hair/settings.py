@@ -63,7 +63,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'salon' / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Felhős statikus mappa
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Ezt a sort frissítsd, hogy ne omoljon össze hiányzó/duplikált statikus elemeknél:
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
