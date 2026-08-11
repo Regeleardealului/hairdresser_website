@@ -1,0 +1,176 @@
+{% extends 'salon/base.html' %}
+{% block title %}Időpontfoglalás - LovasHair{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-warning my-4">Foglalj Időpontot Online</h2>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card p-3 border-secondary">
+            <h5 class="card-title mb-2"><i class="bi bi-calendar-event me-2"></i>Foglalt / Szabad időpontok</h5>
+            
+            <p class="mb-3 text-white fs-6">
+                <span class="text-danger fw-bold fs-5">Megjegyzés:</span> A piros színezésű időpontok már foglaltak!
+            </p>
+            
+            <div id="calendar" style="background: #ffffff; color: #000; border-radius: 8px; padding: 10px;"></div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card p-4 border-secondary">
+            <h4 class="card-title mb-3">Foglalási Adatok</h4>
+            <form method="post" id="bookingForm" novalidate>
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Teljes név *</label>
+                    <input type="text" name="full_name" class="form-control" id="id_full_name" 
+                           placeholder="Kovács Anna" required
+                           oninput="this.value = this.value.replace(/[^a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s-]/g, '');">
+                    <div class="invalid-feedback">A név csak betűket, szóközt és kötőjelet tartalmazhat!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">E-mail cím *</label>
+                    <input type="email" name="email" class="form-control" id="id_email" 
+                           placeholder="anna@example.com" required>
+                    <div class="invalid-feedback">Kérjük, érvényes e-mail címet adj meg (pl. név@domain.hu)!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Telefonszám (max. 11 számjegy) *</label>
+                    <input type="tel" name="phone" class="form-control" id="id_phone" 
+                           placeholder="06301234567" maxlength="11" required
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);">
+                    <div class="invalid-feedback">A telefonszám csak számokból állhat és maximum 11 számjegy lehet!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Szolgáltatás típusa *</label>
+                    {{ form.service }}
+                    <div class="invalid-feedback">Kérjük, válassz egy szolgáltatást!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Kívánt időpont *</label>
+                    <input type="datetime-local" name="date_time" class="form-control" id="id_date_time" required>
+                    <div class="invalid-feedback">Kérjük, válassz ki egy időpontot!</div>
+                </div>
+
+                <button type="submit" class="btn btn-gold w-100 mt-2">Foglalás Véglegesítése</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Naptár inicializálása
+    var calendarEl = document.getElementById('calendar');
+
+    fetch('/api/booked-slots/')
+        .then(response => response.json())
+        .then(data => {
+            var events = data.booked_slots.map(function(slot) {
+                return {
+                    title: 'FOGLALT',
+                    start: slot,
+                    allDay: false,
+                    className: 'fc-event-danger',
+                    backgroundColor: '#dc3545',
+                    borderColor: '#dc3545'
+                };
+            });
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'hu',
+                slotMinTime: '08:00:00',
+                slotMaxTime: '18:00:00',
+                hiddenDays: [0],
+                events: events,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                }
+            });
+            calendar.render();
+        });
+
+    // 2. Betonbiztos Űrlap Validáció Client-side
+    var form = document.getElementById('bookingForm');
+    
+    form.addEventListener('submit', function(event) {
+        var isValid = true;
+
+        var nameInput = document.getElementById('id_full_name');
+        var emailInput = document.getElementById('id_email');
+        var phoneInput = document.getElementById('id_phone');
+        var serviceInput = document.querySelector('select[name="service"]');
+        var dateInput = document.getElementById('id_date_time');
+
+        // Név ellenőrzése (csak betűk, szóköz, kötőjel)
+        var nameRegex = /^[a-zA-ZáéíóöőúüűÁÉÍÓÖŐÚÜŰ\s-]+$/;
+        if (!nameInput.value.trim() || !nameRegex.test(nameInput.value.trim())) {
+            nameInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            nameInput.classList.remove('is-invalid');
+            nameInput.classList.add('is-valid');
+        }
+
+        // Email ellenőrzése (@ és domain szigorú teszt)
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+            emailInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            emailInput.classList.remove('is-invalid');
+            emailInput.classList.add('is-valid');
+        }
+
+        // Telefonszám ellenőrzése (csak szám, max 11)
+        var phoneRegex = /^[0-9]{8,11}$/;
+        if (!phoneInput.value.trim() || !phoneRegex.test(phoneInput.value.trim())) {
+            phoneInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            phoneInput.classList.remove('is-invalid');
+            phoneInput.classList.add('is-valid');
+        }
+
+        // Szolgáltatás kiválasztása
+        if (!serviceInput || !serviceInput.value) {
+            if (serviceInput) serviceInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            serviceInput.classList.remove('is-invalid');
+            serviceInput.classList.add('is-valid');
+        }
+
+        // Időpont megadása
+        if (!dateInput.value) {
+            dateInput.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            dateInput.classList.remove('is-invalid');
+            dateInput.classList.add('is-valid');
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    });
+});
+</script>
+{% endblock %}

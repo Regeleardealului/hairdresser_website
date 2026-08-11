@@ -1,0 +1,17 @@
+{% extends 'salon/base.html' %}
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-md-6">
+        <!-- Kézírásos osztály használata -->
+        <h1 class="brand-handwritten text-warning display-2 mb-0">LovasHair</h1>
+        <h2 class="brand-handwritten text-light display-3 mt-0 mb-4">Professional</h2>
+        
+        <p class="lead my-4">Prémium női fodrászat Debrecen szívében. Szakértelem, stílus és elegancia minden hajtincsben.</p>
+        <a href="{% url 'booking' %}" class="btn btn-gold btn-lg me-3">Foglalj Időpontot</a>
+        <a href="{% url 'services' %}" class="btn btn-outline-light btn-lg">Szolgáltatások</a>
+    </div>
+    <div class="col-md-6 text-center mt-4 mt-md-0">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80" class="img-fluid rounded-4 shadow-lg border border-warning" alt="LovasHair Szalon">
+    </div>
+</div>
+{% endblock %}

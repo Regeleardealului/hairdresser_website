@@ -1,0 +1,106 @@
+:root {
+    --bg-dark: #121212;
+    --card-bg: #1e1e1e;
+    --accent-gold: #d4af37;
+    --accent-rose: #e0a96d;
+    --text-light: #f5f5f5;
+    --text-muted: #aaa;
+    --danger-red: #dc3545;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Playfair Display', Georgia, serif, sans-serif;
+}
+
+.navbar-brand, h1, h2, h3 {
+    letter-spacing: 1px;
+}
+
+/* Kézírásos betűtípus a kezdőlapi kiemeléshez */
+.brand-handwritten {
+    font-family: 'Great Vibes', cursive !important;
+    letter-spacing: 2px;
+}
+
+.bg-gold {
+    background-color: var(--accent-gold) !important;
+    color: #000;
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, #d4af37, #e0a96d);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid #333;
+    color: var(--text-light);
+    border-radius: 12px;
+}
+
+.card-title {
+    color: var(--accent-gold);
+}
+
+/* Red indicator for booked slots in calendar picker */
+.booked-slot {
+    background-color: rgba(220, 53, 69, 0.2) !important;
+    border-color: var(--danger-red) !important;
+    color: var(--danger-red) !important;
+}
+
+.fc-event-danger {
+    background-color: var(--danger-red) !important;
+    border-color: var(--danger-red) !important;
+}
+
+
+/* --- Egyedi Kerek, Túllógó Logó Stílusok (Frissített) --- */
+.custom-logo-wrapper {
+    position: relative;
+    top: 10px; /* Feljebb pozicionálva, hogy szépen középre igazodjon */
+    z-index: 1050;
+    display: inline-block;
+}
+
+.custom-logo-img {
+    width: 142px; /* A korábbi méret 1.5-szerese */
+    height: 142px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ffffff;
+    border: 4px solid var(--accent-gold); /* Kicsit vastagabb arany keret a nagyobb mérethez */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-logo-img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+
+/* Footer egyedi stílus halványítással */
+.custom-footer {
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    opacity: 0.7; /* Lágy, nem tolakodó megjelenés */
+    transition: opacity 0.3s ease;
+}
+
+.custom-footer:hover {
+    opacity: 1; /* Finom interakció rávitelnél */
+}

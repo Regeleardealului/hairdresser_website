@@ -1,0 +1,1 @@
+web: gunicorn lovas_hair.wsgi:application
