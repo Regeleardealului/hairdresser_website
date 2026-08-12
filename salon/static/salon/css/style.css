@@ -18,7 +18,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Kézírásos betűtípus a kezdőlapi kiemeléshez */
 .brand-handwritten {
     font-family: 'Great Vibes', cursive !important;
     letter-spacing: 2px;
@@ -55,7 +54,6 @@ body {
     color: var(--accent-gold);
 }
 
-/* Red indicator for booked slots in calendar picker */
 .booked-slot {
     background-color: rgba(220, 53, 69, 0.2) !important;
     border-color: var(--danger-red) !important;
@@ -68,21 +66,20 @@ body {
 }
 
 
-/* --- Egyedi Kerek, Túllógó Logó Stílusok (Frissített) --- */
 .custom-logo-wrapper {
     position: relative;
-    top: 10px; /* Feljebb pozicionálva, hogy szépen középre igazodjon */
+    top: 10px; 
     z-index: 1050;
     display: inline-block;
 }
 
 .custom-logo-img {
-    width: 142px; /* A korábbi méret 1.5-szerese */
+    width: 142px; 
     height: 142px;
     border-radius: 50%;
     object-fit: cover;
     background-color: #ffffff;
-    border: 4px solid var(--accent-gold); /* Kicsit vastagabb arany keret a nagyobb mérethez */
+    border: 4px solid var(--accent-gold); 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.4);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -93,14 +90,13 @@ body {
 }
 
 
-/* Footer egyedi stílus halványítással */
 .custom-footer {
     color: #ffffff !important;
     font-size: 0.95rem;
-    opacity: 0.7; /* Lágy, nem tolakodó megjelenés */
+    opacity: 0.7; 
     transition: opacity 0.3s ease;
 }
 
 .custom-footer:hover {
-    opacity: 1; /* Finom interakció rávitelnél */
+    opacity: 1; 
 }
