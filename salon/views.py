@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils import timezone
 from django.http import JsonResponse
 from .models import Service, Appointment
 from .forms import AppointmentForm
@@ -30,7 +31,7 @@ def booking_view(request):
 
 def booked_slots_api(request):
     appointments = Appointment.objects.values_list('date_time', flat=True)
-    booked_times = [dt.strftime('%Y-%m-%dT%H:%M') for dt in appointments]
+    booked_times = [timezone.localtime(dt).strftime('%Y-%m-%dT%H:%M') for dt in appointments]
     return JsonResponse({'booked_slots': booked_times})
 
 def about_view(request):
