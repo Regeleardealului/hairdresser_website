@@ -7,7 +7,6 @@ from .models import Service, Appointment
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration_minutes')
 
-# Custom action Excel exportáláshoz
 @admin.action(description='Kijelölt foglalások exportálása Excelbe (.xlsx)')
 def export_to_excel(modeladmin, request, queryset):
     response = HttpResponse(
@@ -19,11 +18,9 @@ def export_to_excel(modeladmin, request, queryset):
     ws = wb.active
     ws.title = "Foglalások"
 
-    # Fejléc sor
     headers = ['Teljes név', 'E-mail cím', 'Telefonszám', 'Szolgáltatás', 'Foglalás időpontja']
     ws.append(headers)
 
-    # Adatsorok betöltése
     for app in queryset:
         ws.append([
             app.full_name,
@@ -40,11 +37,9 @@ def export_to_excel(modeladmin, request, queryset):
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'service', 'date_time', 'phone', 'email')
     
-    # Közvetlen módosíthatóság a listában: az időpont és szolgáltatás helyben átírható!
     list_editable = ('service', 'date_time')
     
     list_filter = ('date_time', 'service')
     search_fields = ('full_name', 'email', 'phone')
     
-    # Custom Excel export akció hozzáadása a műveletekhez
     actions = [export_to_excel]
